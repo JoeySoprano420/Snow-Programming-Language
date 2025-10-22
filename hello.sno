@@ -1,0 +1,6 @@
+## Example 1: Hello World in Snow ##
+
+Fn = [main];
+
+Say("Hello from Snow Programming Language!");
+Say("Rinse and reuse - count in dozens!");
