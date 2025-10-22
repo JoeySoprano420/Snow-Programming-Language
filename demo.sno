@@ -1,0 +1,50 @@
+## Full Snow Demonstration ##
+## Showcasing dodecagram numbers, durations, and derivatives ##
+
+Fn = [main];
+
+Say("=== Snow Language Demo ===");
+Say("");
+
+# Dodecagram number system
+Say("1. Dodecagram Numbers (Base-12)");
+let dozen = 10;        # 12 in decimal
+let gross = 100;       # 144 in decimal
+let eleventy = b;      # 11 in decimal
+
+Say("  dozen = ", dozen);
+Say("  gross = ", gross);
+Say("  eleventy = ", eleventy);
+Say("");
+
+# Arithmetic
+Say("2. Base-12 Arithmetic");
+let sum = dozen + eleventy;
+let product = dozen * 2;
+let division = gross / dozen;
+
+Say("  dozen + eleventy = ", sum);
+Say("  dozen * 2 = ", product);
+Say("  gross / dozen = ", division);
+Say("");
+
+# Conditionals
+Say("3. Conditional Logic");
+if sum > 10:
+    Say("  Sum is greater than 10!");
+else:
+    Say("  Sum is not greater than 10");
+
+Say("");
+
+# Durations
+Say("4. Durations and Timing");
+let frameTime = 3bms;  # 47 milliseconds in base-12
+Say("  Frame time: 3bms (47ms in decimal)");
+
+# Note: wait and every statements would execute here
+# wait frameTime;
+# Say("  Waited for one frame!");
+
+Say("");
+Say("=== Demo Complete ===");
