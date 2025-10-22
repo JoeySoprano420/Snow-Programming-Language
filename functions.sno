@@ -1,0 +1,18 @@
+## Example 4: Functions and Derivatives ##
+
+Fn = [main];
+
+# Function declaration
+Fn add(a, b)
+    ret a + b;
+
+# Call function
+let result = add(10, 5);  # 10 + 5 in base-12
+Say("10 + 5 = ", result);
+
+# Derivative example
+let sensor = 100;
+derive velocity = d(sensor);
+
+Say("Sensor value: ", sensor);
+Say("Velocity (derivative): ", velocity);
