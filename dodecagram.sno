@@ -1,0 +1,19 @@
+## Example 2: Dodecagram Numbers ##
+
+Fn = [main];
+
+# Base-12 literals
+let dozen = 10;        # = 12 in decimal
+let gross = 100;       # = 144 in decimal
+let value = 3b;        # = 47 in decimal
+
+Say("Dozen (10 in base-12): ", dozen);
+Say("Gross (100 in base-12): ", gross);
+Say("Value (3b in base-12): ", value);
+
+# Arithmetic in base-12
+let sum = dozen + 5;
+Say("Dozen + 5 = ", sum);
+
+let product = dozen * 2;
+Say("Dozen * 2 = ", product);
