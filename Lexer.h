@@ -11,6 +11,14 @@
 namespace Snow {
 
 // ============================================================================
+// FORWARD DECLARATIONS FOR MEMORY OPTIMIZATION
+// ============================================================================
+
+struct LabeledTokenContainer;
+class StringInterner;
+class KeywordTrie;
+
+// ============================================================================
 // COMPREHENSIVE TOKEN TYPES
 // ============================================================================
 
@@ -449,9 +457,12 @@ struct LexerConfig {
 class Lexer {
 public:
     explicit Lexer(const std::string& source, 
-        const std::string& filename = "",
-            const LexerConfig& config = LexerConfig());
+         const std::string& filename = "",
+         const LexerConfig& config = LexerConfig());
     
+    // Destructor needs to be defined in .cpp where complete types are available
+    ~Lexer();
+
     // ========================================================================
     // CORE TOKENIZATION
     // ========================================================================
@@ -566,13 +577,8 @@ private:
     // LABELED CONTAINERS & MEMORY OPTIMIZATION (NEW!)
     // ========================================================================
     
-  // Forward declarations
-    struct LabeledTokenContainer;
-    class StringInterner;
-    class KeywordTrie;
-    
     std::unique_ptr<LabeledTokenContainer> token_container_;
-  std::unique_ptr<StringInterner> string_interner_;
+    std::unique_ptr<StringInterner> string_interner_;
     std::unique_ptr<KeywordTrie> keyword_trie_;
     
     // ========================================================================
