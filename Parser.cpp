@@ -74,7 +74,7 @@ void Parser::Synchronize() {
           case TokenType::KW_IF:
  case TokenType::KW_WHILE:
             case TokenType::KW_FOR:
-    case TokenType::KW_RET:
+    case TokenType::KW_RETURN:    // Changed from KW_RET
                 return;
    default:
                 break;
@@ -111,19 +111,10 @@ AST::StmtPtr Parser::ParseStatement() {
  if (Match(TokenType::KW_LET)) return ParseVariableDecl();
     if (Match(TokenType::KW_IF)) return ParseIfStatement();
     if (Match(TokenType::KW_EVERY)) return ParseEveryStatement();
+    // if (Match(TokenType::KW_PARALLEL)) return ParseParallelBlock(); // Not implemented
     if (Match(TokenType::KW_DERIVE)) return ParseDeriveStatement();
     if (Match(TokenType::KW_WAIT)) return ParseWaitStatement();
-    if (Match(TokenType::KW_RET)) return ParseReturnStatement();
-    
-    if (Match(TokenType::KW_BREAK)) {
-        Consume(TokenType::SEMICOLON, "Expected ';' after 'break'");
-        return std::make_shared<AST::ExpressionStatement>(nullptr, previous_token_.location);
-    }
-    
-    if (Match(TokenType::KW_CONTINUE)) {
-  Consume(TokenType::SEMICOLON, "Expected ';' after 'continue'");
-        return std::make_shared<AST::ExpressionStatement>(nullptr, previous_token_.location);
-    }
+    if (Match(TokenType::KW_RETURN)) return ParseReturnStatement();  // Changed from KW_RET
     
     return ParseExpressionStatement();
 }
@@ -419,12 +410,9 @@ AST::ExprPtr Parser::ParsePrimary() {
         return std::make_shared<AST::LiteralExpr>(previous_token_.lexeme, previous_token_.location);
     }
     
-  // Duration
-    if (Match(TokenType::TIME_UNIT)) {
-        Duration dur(previous_token_.numeric_value, previous_token_.time_unit);
-      return std::make_shared<AST::DurationExpr>(dur, previous_token_.location);
-    }
-    
+    // Duration literal (handled by lexer): 100ms, 5s, 30m, 2h
+    // These come in as time token types already
+
     // Identifier
     if (Match(TokenType::IDENTIFIER)) {
         std::string name = previous_token_.lexeme;
@@ -451,13 +439,16 @@ AST::ExprPtr Parser::ParsePrimary() {
 }
 
 Duration Parser::ParseDuration() {
-    if (Check(TokenType::TIME_UNIT)) {
+    // Check for any time unit token
+    if (Check(TokenType::TIME_NANOSECOND) || Check(TokenType::TIME_MICROSECOND) ||
+     Check(TokenType::TIME_MILLISECOND) || Check(TokenType::TIME_SECOND) ||
+     Check(TokenType::TIME_MINUTE) || Check(TokenType::TIME_HOUR)) {
         Token token = current_token_;
         Advance();
         return Duration(token.numeric_value, token.time_unit);
     }
     
-    Error("Expected duration");
+ Error("Expected duration");
     throw std::runtime_error("Expected duration");
 }
 
