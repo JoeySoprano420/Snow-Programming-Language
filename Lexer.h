@@ -521,25 +521,37 @@ public:
     
     Statistics GetStatistics() const { return stats_; }
 
-private:
     // ========================================================================
+  // LABELED CONTAINER ACCESS (NEW!)
+  // ========================================================================
+    
+    // Quick access to categorized tokens
+    const std::vector<Token*>* GetTokensByCategory(const std::string& category) const;
+    const std::vector<Token*>* GetTokensByType(TokenType type) const;
+    Token* GetTokenByLexeme(const std::string& lexeme) const;
+    
+    // Memory efficiency metrics
+    size_t GetMemorySavings() const;
+
+private:
+  // ========================================================================
     // INTERNAL STATE
     // ========================================================================
     
     std::string source_;
     std::string filename_;
-    size_t current_;
+  size_t current_;
     size_t line_;
     size_t column_;
     size_t start_; // Start of current token
-    
+  
     LexerConfig config_;
-    Statistics stats_;
+ Statistics stats_;
     
     // Token buffer for peeking
- std::vector<Token> token_buffer_;
-    
-    // Error collection
+    std::vector<Token> token_buffer_;
+  
+ // Error collection
     std::vector<LexerError> errors_;
     
     // Keyword dictionaries
@@ -549,6 +561,19 @@ private:
     
     // Indentation tracking
     std::vector<int> indent_stack_;
+    
+    // ========================================================================
+    // LABELED CONTAINERS & MEMORY OPTIMIZATION (NEW!)
+    // ========================================================================
+    
+  // Forward declarations
+    struct LabeledTokenContainer;
+    class StringInterner;
+    class KeywordTrie;
+    
+    std::unique_ptr<LabeledTokenContainer> token_container_;
+  std::unique_ptr<StringInterner> string_interner_;
+    std::unique_ptr<KeywordTrie> keyword_trie_;
     
     // ========================================================================
     // CHARACTER OPERATIONS
